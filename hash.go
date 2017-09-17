@@ -21,7 +21,7 @@ type Node struct {
 }
 
 type Hash struct {
-	values [][]Node
+	values [][]*Node
 	count  uint32
 	size   uint32
 }
@@ -31,7 +31,7 @@ func New(size uint32) (*Hash, error) {
 		return nil, errors.New("Size of hash must be a natural number")
 	}
 	return &Hash{
-		make([][]Node, size),
+		make([][]*Node, size),
 		0,
 		size,
 	}, nil
@@ -48,7 +48,7 @@ func (h *Hash) Set(key string, value interface{}) bool {
 	if h.count == h.size {
 		return false
 	}
-	h.values[index] = append(h.values[index], Node{key,value})
+	h.values[index] = append(h.values[index], &Node{key,value})
 	h.count++
 	return true
 }
