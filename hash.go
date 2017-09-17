@@ -33,7 +33,7 @@ type Node struct {
 }
 
 type Hash struct {
-  entries [][]Node
+  values [][]Node
   count int
   size int
 }
@@ -48,23 +48,23 @@ func New(size int) *Hash {
 
 func (h *Hash) Set(key string, value interface{}) bool {
   index := index(key, h.size)
-  for _, node := range h.entries[index] {
+  for _, node := range h.values[index] {
     if node.key == key {
       node.value = value
       return true
     }
   }
-  if(h.count + 1 > h.size) {
+  if(h.count == h.size) {
     return false
   }
-  h.entries[index] = append(h.entries[index], value)
+  h.values[index] = append(h.values[index], value)
   h.count++
   return true
 }
 
 func (h *Hash) Get(key string) interface{} {
   index := index(key, h.size)
-  for _, node := range h.entries[index] {
+  for _, node := range h.values[index] {
     if node.key == key {
       return node.value
     }
@@ -74,9 +74,9 @@ func (h *Hash) Get(key string) interface{} {
 
 func (h *Hash) Delete(key string) interface{} {
   index := index(key, h.size)
-  for _, node := range h.entries[index] {
+  for _, node := range h.values[index] {
     if node.key == key {
-      h.entries[index] = append(h.entries[index][:i], h.entries[index][i+1:]...)
+      h.values[index] = append(h.values[index][:i], h.values[index][i+1:]...)
       count--
       return node.value
     }
